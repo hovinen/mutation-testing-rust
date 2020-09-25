@@ -1,0 +1,12 @@
+[package]
+name = "mutation-test-engine"
+version = "0.1.0"
+authors = ["Bradford Hovinen <hovinen@gmail.com>"]
+edition = "2018"
+
+# See more keys and their definitions at https://doc.rust-lang.org/cargo/reference/manifest.html
+
+[dependencies]
+wasmi = "0.6.2"
+parity-wasm = "0.41"
+rustc-demangle = "0.1.16"
