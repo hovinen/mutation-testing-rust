@@ -1,7 +1,7 @@
+mod all_mutators;
 mod instruction_swapping_mutator;
 pub mod mutation;
 mod mutator;
-mod all_mutators;
 
 pub use mutation::Mutation;
 use mutator::Mutator;

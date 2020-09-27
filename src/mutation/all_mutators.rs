@@ -1,5 +1,5 @@
-use crate::mutation::Mutator;
 use crate::mutation::instruction_swapping_mutator::InstructionSwappingMutator;
+use crate::mutation::Mutator;
 use parity_wasm::elements::Instruction;
 
 pub(crate) static ALL_MUTATORS: [&'static (dyn Mutator + Send + Sync + 'static); 12] = [
@@ -41,7 +41,7 @@ pub(crate) static ALL_MUTATORS: [&'static (dyn Mutator + Send + Sync + 'static);
     },
     &InstructionSwappingMutator {
         original_instruction: Instruction::F32Gt,
-        replacement_instruction: Instruction::F32Ge
+        replacement_instruction: Instruction::F32Ge,
     },
     &InstructionSwappingMutator {
         original_instruction: Instruction::F64Ge,

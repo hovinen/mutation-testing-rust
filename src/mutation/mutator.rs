@@ -1,5 +1,5 @@
-use parity_wasm::elements::FuncBody;
 use crate::mutation::Mutation;
+use parity_wasm::elements::FuncBody;
 
 pub(crate) trait Mutator {
     fn perform(&self, body: &mut FuncBody, index: usize);
