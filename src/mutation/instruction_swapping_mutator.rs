@@ -12,10 +12,8 @@ impl Mutator for InstructionSwappingMutator {
     fn perform(&self, body: &mut FuncBody, index: usize) {
         body.code_mut().elements_mut()[index] = self.replacement_instruction.clone();
     }
-}
 
-impl InstructionSwappingMutator {
-    pub fn find(&self, body: &FuncBody, function_index: usize) -> Vec<Mutation> {
+    fn find(&self, body: &FuncBody, function_index: usize) -> Vec<Mutation> {
         let mut result = Vec::<Mutation>::new();
         for (instruction_index, instruction) in body.code().elements().iter().enumerate() {
             if *instruction == self.original_instruction {
