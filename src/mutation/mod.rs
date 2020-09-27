@@ -1,11 +1,11 @@
-pub mod i32geu_to_gtu_mutator;
-pub mod instruction_swapping_mutator;
+mod i32geu_to_gtu_mutator;
+mod instruction_swapping_mutator;
 pub mod mutation;
-pub mod mutator;
+mod mutator;
 mod all_mutators;
 
 pub use mutation::Mutation;
-pub use mutator::Mutator;
+use mutator::Mutator;
 use parity_wasm::elements::FuncBody;
 
 pub(crate) fn find_mutations(indices: Vec<usize>, bodies: &[FuncBody]) -> Vec<Mutation> {
