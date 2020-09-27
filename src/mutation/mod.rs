@@ -1,4 +1,5 @@
 pub mod i32geu_to_gtu_mutator;
+pub mod instruction_swapping_mutator;
 pub mod mutation;
 pub mod mutator;
 
