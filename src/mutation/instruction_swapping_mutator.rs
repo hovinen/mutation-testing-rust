@@ -5,7 +5,7 @@ use parity_wasm::elements::{FuncBody, Instruction};
 #[derive(Clone)]
 pub struct InstructionSwappingMutator {
     pub(crate) original_instruction: Instruction,
-    pub(crate) replacement_instruction: Instruction
+    pub(crate) replacement_instruction: Instruction,
 }
 
 impl Mutator for InstructionSwappingMutator {
@@ -32,8 +32,8 @@ impl InstructionSwappingMutator {
 
 #[cfg(test)]
 mod tests {
-    use crate::mutation::Mutator;
     use crate::mutation::instruction_swapping_mutator::InstructionSwappingMutator;
+    use crate::mutation::Mutator;
     use parity_wasm::builder::{FuncBodyBuilder, Identity, ModuleBuilder};
     use parity_wasm::elements::{Instruction, Instructions};
 
@@ -41,7 +41,7 @@ mod tests {
     fn perform_writes_new_instruction_at_index_0() {
         let subject = InstructionSwappingMutator {
             original_instruction: Instruction::I32GeU,
-            replacement_instruction: Instruction::I32GtU
+            replacement_instruction: Instruction::I32GtU,
         };
         let mut body = FuncBodyBuilder::with_callback(Identity)
             .with_instructions(Instructions::new(vec![Instruction::I32GeU]))
@@ -56,7 +56,7 @@ mod tests {
     fn perform_writes_new_instruction_at_index_1() {
         let subject = InstructionSwappingMutator {
             original_instruction: Instruction::I32GeU,
-            replacement_instruction: Instruction::I32GtU
+            replacement_instruction: Instruction::I32GtU,
         };
         let mut body = FuncBodyBuilder::with_callback(Identity)
             .with_instructions(Instructions::new(vec![
@@ -77,7 +77,7 @@ mod tests {
     fn find_does_not_identify_mutation_in_empty_function() {
         let subject = InstructionSwappingMutator {
             original_instruction: Instruction::I32GeU,
-            replacement_instruction: Instruction::I32GtU
+            replacement_instruction: Instruction::I32GtU,
         };
         let body = FuncBodyBuilder::with_callback(Identity)
             .with_instructions(Instructions::new(vec![]))
@@ -92,7 +92,7 @@ mod tests {
     fn find_does_not_identify_mutation_in_function_with_no_matching_instruction() {
         let subject = InstructionSwappingMutator {
             original_instruction: Instruction::I32GeU,
-            replacement_instruction: Instruction::I32GtU
+            replacement_instruction: Instruction::I32GtU,
         };
         let body = FuncBodyBuilder::with_callback(Identity)
             .with_instructions(Instructions::new(vec![Instruction::I32Add]))
@@ -107,7 +107,7 @@ mod tests {
     fn find_identifies_mutation_at_index_0() {
         let subject = InstructionSwappingMutator {
             original_instruction: Instruction::I32GeU,
-            replacement_instruction: Instruction::I32GtU
+            replacement_instruction: Instruction::I32GtU,
         };
         let body = FuncBodyBuilder::with_callback(Identity)
             .with_instructions(Instructions::new(vec![Instruction::I32GeU]))
@@ -131,7 +131,7 @@ mod tests {
     fn find_identifies_mutation_at_index_1() {
         let subject = InstructionSwappingMutator {
             original_instruction: Instruction::I32GeU,
-            replacement_instruction: Instruction::I32GtU
+            replacement_instruction: Instruction::I32GtU,
         };
         let body = FuncBodyBuilder::with_callback(Identity)
             .with_instructions(Instructions::new(vec![
@@ -158,7 +158,7 @@ mod tests {
     fn find_identifies_mutation_at_function_index_1() {
         let subject = InstructionSwappingMutator {
             original_instruction: Instruction::I32GeU,
-            replacement_instruction: Instruction::I32GtU
+            replacement_instruction: Instruction::I32GtU,
         };
         let body = FuncBodyBuilder::with_callback(Identity)
             .with_instructions(Instructions::new(vec![Instruction::I32GeU]))
@@ -184,7 +184,7 @@ mod tests {
     fn find_identifies_two_mutations() {
         let subject = InstructionSwappingMutator {
             original_instruction: Instruction::I32GeU,
-            replacement_instruction: Instruction::I32GtU
+            replacement_instruction: Instruction::I32GtU,
         };
         let body = FuncBodyBuilder::with_callback(Identity)
             .with_instructions(Instructions::new(vec![
