@@ -1,8 +1,9 @@
 use crate::mutation::instruction_swapping_mutator::InstructionSwappingMutator;
+use crate::mutation::set_cancelling_mutator::SetCancellingMutator;
 use crate::mutation::Mutator;
 use parity_wasm::elements::Instruction;
 
-pub(crate) static ALL_MUTATORS: [&'static (dyn Mutator + Send + Sync + 'static); 52] = [
+pub(crate) static ALL_MUTATORS: [&'static (dyn Mutator + Send + Sync + 'static); 53] = [
     &InstructionSwappingMutator {
         original_instruction: Instruction::I32GeU,
         replacement_instruction: Instruction::I32GtU,
@@ -214,4 +215,6 @@ pub(crate) static ALL_MUTATORS: [&'static (dyn Mutator + Send + Sync + 'static);
         original_instruction: Instruction::F64Floor,
         replacement_instruction: Instruction::F64Ceil,
     },
+
+    &SetCancellingMutator,
 ];

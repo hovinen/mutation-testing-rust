@@ -2,6 +2,7 @@ mod all_mutators;
 mod instruction_swapping_mutator;
 pub mod mutation;
 mod mutator;
+mod set_cancelling_mutator;
 
 pub use mutation::Mutation;
 use mutator::Mutator;
