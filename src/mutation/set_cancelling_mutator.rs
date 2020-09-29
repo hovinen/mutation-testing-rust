@@ -14,14 +14,22 @@ impl Mutator for SetCancellingMutator {
         let mut result = Vec::<Mutation>::new();
         for (instruction_index, instruction) in body.code().elements().iter().enumerate() {
             if let Instruction::SetLocal(_) = *instruction {
-                result.push(Mutation {
-                    mutator: Box::new(self.clone()),
-                    instruction_index,
-                    function_index,
-                });
+                result.push(self.create_mutation(function_index, instruction_index));
+            } else if let Instruction::SetGlobal(_) = *instruction {
+                result.push(self.create_mutation(function_index, instruction_index));
             }
         }
         result
+    }
+}
+
+impl SetCancellingMutator {
+    fn create_mutation(&self, function_index: usize, instruction_index: usize) -> Mutation {
+        Mutation {
+            mutator: Box::new(self.clone()),
+            instruction_index,
+            function_index,
+        }
     }
 }
 
@@ -87,7 +95,7 @@ mod tests {
     }
 
     #[test]
-    fn find_identifies_mutation_at_index_0() {
+    fn find_identifies_mutation_of_set_local_at_index_0() {
         let subject = SetCancellingMutator;
         let body = FuncBodyBuilder::with_callback(Identity)
             .with_instructions(Instructions::new(vec![Instruction::SetLocal(0)]))
@@ -106,6 +114,28 @@ mod tests {
             vec![Instruction::Drop]
         );
     }
+
+    #[test]
+    fn find_identifies_mutation_of_set_global_at_index_0() {
+        let subject = SetCancellingMutator;
+        let body = FuncBodyBuilder::with_callback(Identity)
+            .with_instructions(Instructions::new(vec![Instruction::SetGlobal(0)]))
+            .build();
+        let mut module = ModuleBuilder::with_callback(Identity)
+            .function()
+            .with_body(body)
+            .build()
+            .build();
+
+        let result = subject.find(&module.code_section().unwrap().bodies()[0], 0);
+
+        result[0].perform(&mut module);
+        assert_eq!(
+            module.code_section().unwrap().bodies()[0].code().elements(),
+            vec![Instruction::Drop]
+        );
+    }
+
     #[test]
     fn find_identifies_mutation_at_index_1() {
         let subject = SetCancellingMutator;
