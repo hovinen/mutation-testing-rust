@@ -1,6 +1,6 @@
 use crate::mutation::mutator::Mutator;
-use parity_wasm::elements::{FuncBody, Instruction};
 use crate::mutation::Mutation;
+use parity_wasm::elements::{FuncBody, Instruction};
 
 #[derive(Clone)]
 pub(crate) struct SetCancellingMutator;
@@ -13,10 +13,16 @@ impl Mutator for SetCancellingMutator {
     fn find(&self, body: &FuncBody, function_index: usize) -> Vec<Mutation> {
         let mut result = Vec::<Mutation>::new();
         for (instruction_index, instruction) in body.code().elements().iter().enumerate() {
-            if let Instruction::SetLocal(_) = *instruction {
-                result.push(self.create_mutation(function_index, instruction_index));
-            } else if let Instruction::SetGlobal(_) = *instruction {
-                result.push(self.create_mutation(function_index, instruction_index));
+            match *instruction {
+                Instruction::SetLocal(_)
+                | Instruction::SetGlobal(_)
+                | Instruction::I32Store(_, _)
+                | Instruction::I64Store(_, _)
+                | Instruction::F32Store(_, _)
+                | Instruction::F64Store(_, _) => {
+                    result.push(self.create_mutation(function_index, instruction_index))
+                }
+                _ => {}
             }
         }
         result
@@ -35,10 +41,10 @@ impl SetCancellingMutator {
 
 #[cfg(test)]
 mod tests {
+    use crate::mutation::mutator::Mutator;
     use crate::mutation::set_cancelling_mutator::SetCancellingMutator;
     use parity_wasm::builder::{FuncBodyBuilder, Identity, ModuleBuilder};
-    use parity_wasm::elements::{Instructions, Instruction};
-    use crate::mutation::mutator::Mutator;
+    use parity_wasm::elements::{Instruction, Instructions};
 
     #[test]
     fn perform_writes_new_instruction_at_index_0() {
@@ -94,46 +100,47 @@ mod tests {
         assert_eq!(result.len(), 0);
     }
 
-    #[test]
-    fn find_identifies_mutation_of_set_local_at_index_0() {
-        let subject = SetCancellingMutator;
-        let body = FuncBodyBuilder::with_callback(Identity)
-            .with_instructions(Instructions::new(vec![Instruction::SetLocal(0)]))
-            .build();
-        let mut module = ModuleBuilder::with_callback(Identity)
-            .function()
-            .with_body(body)
-            .build()
-            .build();
+    macro_rules! mutation_tests {
+        ($($name:ident: $instruction:expr,)*) => {
+        mod find_identifies_mutation_index_0 {
+            use crate::mutation::set_cancelling_mutator::SetCancellingMutator;
+            use parity_wasm::builder::{FuncBodyBuilder, Identity, ModuleBuilder};
+            use parity_wasm::elements::{Instructions, Instruction};
+            use crate::mutation::mutator::Mutator;
 
-        let result = subject.find(&module.code_section().unwrap().bodies()[0], 0);
+            $(
+                #[test]
+                fn $name() {
+                    let subject = SetCancellingMutator;
+                    let body = FuncBodyBuilder::with_callback(Identity)
+                        .with_instructions(Instructions::new(vec![$instruction]))
+                        .build();
+                    let mut module = ModuleBuilder::with_callback(Identity)
+                        .function()
+                        .with_body(body)
+                        .build()
+                        .build();
 
-        result[0].perform(&mut module);
-        assert_eq!(
-            module.code_section().unwrap().bodies()[0].code().elements(),
-            vec![Instruction::Drop]
-        );
+                    let result = subject.find(&module.code_section().unwrap().bodies()[0], 0);
+
+                    result[0].perform(&mut module);
+                    assert_eq!(
+                        module.code_section().unwrap().bodies()[0].code().elements(),
+                        vec![Instruction::Drop]
+                    );
+                }
+            )*
+        }
+        }
     }
 
-    #[test]
-    fn find_identifies_mutation_of_set_global_at_index_0() {
-        let subject = SetCancellingMutator;
-        let body = FuncBodyBuilder::with_callback(Identity)
-            .with_instructions(Instructions::new(vec![Instruction::SetGlobal(0)]))
-            .build();
-        let mut module = ModuleBuilder::with_callback(Identity)
-            .function()
-            .with_body(body)
-            .build()
-            .build();
-
-        let result = subject.find(&module.code_section().unwrap().bodies()[0], 0);
-
-        result[0].perform(&mut module);
-        assert_eq!(
-            module.code_section().unwrap().bodies()[0].code().elements(),
-            vec![Instruction::Drop]
-        );
+    mutation_tests! {
+        set_local: Instruction::SetLocal(0),
+        set_global: Instruction::SetGlobal(0),
+        i32_store: Instruction::I32Store(0, 0),
+        i64_store: Instruction::I64Store(0, 0),
+        f32_store: Instruction::F32Store(0, 0),
+        f64_store: Instruction::F64Store(0, 0),
     }
 
     #[test]

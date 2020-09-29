@@ -68,7 +68,6 @@ pub(crate) static ALL_MUTATORS: [&'static (dyn Mutator + Send + Sync + 'static);
         original_instruction: Instruction::I32Or,
         replacement_instruction: Instruction::I32And,
     },
-
     &InstructionSwappingMutator {
         original_instruction: Instruction::I64GeU,
         replacement_instruction: Instruction::I64GtU,
@@ -133,7 +132,6 @@ pub(crate) static ALL_MUTATORS: [&'static (dyn Mutator + Send + Sync + 'static);
         original_instruction: Instruction::I64Or,
         replacement_instruction: Instruction::I64And,
     },
-
     &InstructionSwappingMutator {
         original_instruction: Instruction::F32Ge,
         replacement_instruction: Instruction::F32Gt,
@@ -174,7 +172,6 @@ pub(crate) static ALL_MUTATORS: [&'static (dyn Mutator + Send + Sync + 'static);
         original_instruction: Instruction::F32Floor,
         replacement_instruction: Instruction::F32Ceil,
     },
-
     &InstructionSwappingMutator {
         original_instruction: Instruction::F64Ge,
         replacement_instruction: Instruction::F64Gt,
@@ -215,6 +212,5 @@ pub(crate) static ALL_MUTATORS: [&'static (dyn Mutator + Send + Sync + 'static);
         original_instruction: Instruction::F64Floor,
         replacement_instruction: Instruction::F64Ceil,
     },
-
     &SetCancellingMutator,
 ];
