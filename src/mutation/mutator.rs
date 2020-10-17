@@ -5,4 +5,6 @@ pub(crate) trait Mutator {
     fn perform(&self, body: &mut FuncBody, index: usize);
 
     fn find(&self, body: &FuncBody, function_index: usize) -> Vec<Mutation>;
+
+    fn describe(&self) -> String;
 }

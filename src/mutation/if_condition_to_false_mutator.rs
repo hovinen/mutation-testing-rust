@@ -23,6 +23,10 @@ impl Mutator for IfConditionToFalseMutator {
         }
         result
     }
+
+    fn describe(&self) -> String {
+        String::from("IfConditionToFalse")
+    }
 }
 
 impl IfConditionToFalseMutator {

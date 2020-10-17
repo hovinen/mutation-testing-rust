@@ -19,6 +19,6 @@ impl Mutation {
 
 impl Debug for Mutation {
     fn fmt(&self, f: &mut Formatter<'_>) -> Result {
-        write!(f, "Mutation")
+        write!(f, "\nMutation<{}, {}, {}>", self.mutator.describe(), self.function_index, self.instruction_index)
     }
 }

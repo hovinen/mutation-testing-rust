@@ -41,6 +41,10 @@ impl Mutator for SetCancellingMutator {
         }
         result
     }
+
+    fn describe(&self) -> String {
+        String::from("SetCancelling")
+    }
 }
 
 impl SetCancellingMutator {
