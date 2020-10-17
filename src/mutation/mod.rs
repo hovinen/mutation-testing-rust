@@ -1,10 +1,10 @@
 mod all_mutators;
+mod if_condition_to_false_mutator;
+mod if_condition_to_true_mutator;
 mod instruction_swapping_mutator;
 pub mod mutation;
 mod mutator;
 mod set_cancelling_mutator;
-mod if_condition_to_true_mutator;
-mod if_condition_to_false_mutator;
 
 pub use mutation::Mutation;
 use mutator::Mutator;

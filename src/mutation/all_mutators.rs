@@ -1,8 +1,8 @@
+use crate::mutation::if_condition_to_true_mutator::IfConditionToTrueMutator;
 use crate::mutation::instruction_swapping_mutator::InstructionSwappingMutator;
 use crate::mutation::set_cancelling_mutator::SetCancellingMutator;
 use crate::mutation::Mutator;
 use parity_wasm::elements::Instruction;
-use crate::mutation::if_condition_to_true_mutator::IfConditionToTrueMutator;
 
 pub(crate) static ALL_MUTATORS: [&'static (dyn Mutator + Send + Sync + 'static); 54] = [
     &InstructionSwappingMutator {

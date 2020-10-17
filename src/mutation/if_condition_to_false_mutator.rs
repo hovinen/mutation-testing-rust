@@ -41,8 +41,8 @@ impl IfConditionToFalseMutator {
 
 #[cfg(test)]
 mod tests {
-    use crate::mutation::mutator::Mutator;
     use crate::mutation::if_condition_to_false_mutator::IfConditionToFalseMutator;
+    use crate::mutation::mutator::Mutator;
     use parity_wasm::builder::{FuncBodyBuilder, Identity, ModuleBuilder};
     use parity_wasm::elements::{Instruction, Instructions};
 

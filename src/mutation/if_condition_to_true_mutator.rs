@@ -44,8 +44,8 @@ impl IfConditionToTrueMutator {
 
 #[cfg(test)]
 mod tests {
-    use crate::mutation::mutator::Mutator;
     use crate::mutation::if_condition_to_true_mutator::IfConditionToTrueMutator;
+    use crate::mutation::mutator::Mutator;
     use parity_wasm::builder::{FuncBodyBuilder, Identity, ModuleBuilder};
     use parity_wasm::elements::{Instruction, Instructions};
 
@@ -58,7 +58,10 @@ mod tests {
 
         subject.perform(&mut body, 0);
 
-        assert_eq!(body.code().elements(), vec![Instruction::Drop, Instruction::Br(0)]);
+        assert_eq!(
+            body.code().elements(),
+            vec![Instruction::Drop, Instruction::Br(0)]
+        );
     }
 
     #[test]
@@ -70,7 +73,10 @@ mod tests {
 
         subject.perform(&mut body, 0);
 
-        assert_eq!(body.code().elements(), vec![Instruction::Drop, Instruction::Br(5)]);
+        assert_eq!(
+            body.code().elements(),
+            vec![Instruction::Drop, Instruction::Br(5)]
+        );
     }
 
     #[test]
@@ -87,7 +93,11 @@ mod tests {
 
         assert_eq!(
             body.code().elements(),
-            vec![Instruction::GetLocal(1), Instruction::Drop, Instruction::Br(0)]
+            vec![
+                Instruction::GetLocal(1),
+                Instruction::Drop,
+                Instruction::Br(0)
+            ]
         );
     }
 
@@ -229,7 +239,12 @@ mod tests {
         }
         assert_eq!(
             module.code_section().unwrap().bodies()[0].code().elements(),
-            vec![Instruction::Drop, Instruction::Br(0), Instruction::Drop, Instruction::Br(1)]
+            vec![
+                Instruction::Drop,
+                Instruction::Br(0),
+                Instruction::Drop,
+                Instruction::Br(1)
+            ]
         );
     }
 }

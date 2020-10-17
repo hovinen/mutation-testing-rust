@@ -28,7 +28,10 @@ impl Mutator for InstructionSwappingMutator {
     }
 
     fn describe(&self) -> String {
-        format!("InstructionSwapping<{}, {}>", self.original_instruction, self.replacement_instruction)
+        format!(
+            "InstructionSwapping<{}, {}>",
+            self.original_instruction, self.replacement_instruction
+        )
     }
 }
 
